@@ -1,0 +1,28 @@
+package org.prgrms.kyu.entity;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "OrderFoods")
+@Getter
+@NoArgsConstructor
+public class OrderFood {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "quantity", nullable = false)
+    private Integer quantity;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_id", referencedColumnName = "id")
+    private Order order;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "food_id", referencedColumnName = "id")
+    private Food food;
+
+}
