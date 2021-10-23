@@ -1,9 +1,13 @@
 package org.prgrms.kyu.dto;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.prgrms.kyu.entity.User;
 
 import java.time.LocalDateTime;
 
+@NoArgsConstructor
+@Getter
 public class UserInfo {
     private String email;
     private String name;

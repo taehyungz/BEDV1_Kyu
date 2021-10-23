@@ -3,6 +3,8 @@ spring:
     console:
       enabled: true
   jpa:
+    hibernate:
+      ddl-auto: update
     generate-ddl: true
     database: H2
     show-sql: true
@@ -12,6 +14,6 @@ spring:
         dialect: org.hibernate.dialect.H2Dialect
         query.in_clause_parameter_padding: true
         hbm2ddl:
-          auto: UPDATE
+          auto: update
   output:
     ansi.enabled: always
