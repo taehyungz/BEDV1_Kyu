@@ -32,7 +32,7 @@ public class UserService {
 
     public UserInfo login(LoginRequest loginRequest) throws AuthenticationException {
         final Optional<User> optionalUser = repository.findByEmail(loginRequest.getEmail());
-        if (optionalUser.isEmpty() || encoder.matches(loginRequest.getPassword(), optionalUser.get().getPassword())) {
+        if (optionalUser.isEmpty() || !encoder.matches(loginRequest.getPassword(), optionalUser.get().getPassword())) {
             throw new AuthenticationException("회원을 찾을 수 없습니다.");
         }
         return new UserInfo(optionalUser.get());
