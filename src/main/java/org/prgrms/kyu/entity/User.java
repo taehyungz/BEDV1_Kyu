@@ -2,6 +2,7 @@ package org.prgrms.kyu.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.prgrms.kyu.dto.JoinRequest;
 
 import javax.persistence.*;
 
@@ -30,4 +31,13 @@ public class User {
 
     @Column(nullable = false)
     private String address;
+
+    public User(JoinRequest form) {
+        this.email = form.getEmail();
+        this.password = form.getPassword();
+        this.name = form.getName();
+        this.nickname = form.getNickname();
+        this.balance = 1000000L;
+        this.address = form.getAddress();
+    }
 }
