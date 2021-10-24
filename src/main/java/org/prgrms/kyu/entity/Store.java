@@ -1,5 +1,6 @@
 package org.prgrms.kyu.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -37,7 +38,7 @@ public class Store extends BaseTimeEntity {
   @Column(nullable = false)
   private Integer posY;
 
-  @OneToOne(fetch = FetchType.LAZY)
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "user_id")
   private User user;
 
