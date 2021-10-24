@@ -19,6 +19,7 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository repository;
+    private final SecurityService securityService;
     private final PasswordEncoder encoder;
 
     @Transactional
@@ -28,6 +29,10 @@ public class UserService {
 
         final User savedUser = repository.save(user);
         return savedUser.getId();
+    }
+
+    public void autoLogin(JoinRequest joinRequest) {
+        securityService.autoLogin(joinRequest.getEmail(), encoder.encode(joinRequest.getPassword()));
     }
 
     public UserInfo login(LoginRequest loginRequest) throws AuthenticationException {

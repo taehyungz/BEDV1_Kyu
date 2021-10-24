@@ -1,32 +1,39 @@
 package org.prgrms.kyu.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.prgrms.kyu.ApiResponse;
 import org.prgrms.kyu.dto.JoinRequest;
-import org.prgrms.kyu.dto.LoginRequest;
-import org.prgrms.kyu.dto.UserInfo;
+import org.prgrms.kyu.service.SecurityService;
 import org.prgrms.kyu.service.UserService;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import javax.naming.AuthenticationException;
-
-@RestController
-@RequestMapping("/api/v1/users")
+@Controller
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
+    private final SecurityService securityService;
 
-    @PostMapping("/login")
-    public ApiResponse<UserInfo> login(@RequestBody LoginRequest loginRequest) throws AuthenticationException {
-        return ApiResponse.ok(userService.login(loginRequest));
+    @GetMapping("/")
+    public String home() {
+        return "/index";
     }
 
-    @PostMapping("/join")
-    public ApiResponse<Long> join(@RequestBody JoinRequest joinRequest) {
-        return ApiResponse.ok(userService.join(joinRequest));
+    @GetMapping("/user/signup")
+    public String signUp(Model model) {
+        if (securityService.isAuthenticated()) return "redirect:/";
+        model.addAttribute("joinForm", new JoinRequest());
+        return "/user/signUpForm";
     }
+
+    @PostMapping("/user/signup")
+    public String signUp(@ModelAttribute("joinForm") JoinRequest joinRequest) {
+        userService.join(joinRequest);
+        userService.autoLogin(joinRequest);
+        return "redirect:/";
+    }
+
 }
