@@ -32,6 +32,9 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private String address;
 
+    @Column(nullable = false)
+    private UserType type;
+
     public User(JoinRequest form) {
         this.email = form.getEmail();
         this.password = form.getPassword();
@@ -39,5 +42,6 @@ public class User extends BaseTimeEntity {
         this.nickname = form.getNickname();
         this.balance = 1000000L;
         this.address = form.getAddress();
+        this.type = UserType.valueOf(form.getType());
     }
 }

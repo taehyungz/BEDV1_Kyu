@@ -13,6 +13,7 @@ public class JoinRequest {
     String name;
     String nickname;
     String address;
+    String type;
 
     public void encodePassword(String encodedPassword) {
         this.password = encodedPassword;
