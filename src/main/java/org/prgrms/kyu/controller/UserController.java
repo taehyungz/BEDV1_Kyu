@@ -2,8 +2,11 @@ package org.prgrms.kyu.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.prgrms.kyu.dto.JoinRequest;
+import org.prgrms.kyu.dto.UserInfo;
 import org.prgrms.kyu.service.SecurityService;
 import org.prgrms.kyu.service.UserService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +21,12 @@ public class UserController {
     private final SecurityService securityService;
 
     @GetMapping("/")
-    public String home() {
+    public String home(Model model, Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            final UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            final UserInfo userInfo = userService.getUser(userDetails.getUsername());
+            model.addAttribute("userInfo", userInfo);
+        }
         return "/index";
     }
 
@@ -34,6 +42,13 @@ public class UserController {
         userService.join(joinRequest);
         userService.autoLogin(joinRequest);
         return "redirect:/";
+    }
+
+    @GetMapping("/user/login")
+    public String login(Model model, String logout) {
+        if (securityService.isAuthenticated()) return "redirect:/";
+        if (logout != null) model.addAttribute("message", "안전하게 로그아웃되었습니다.");
+        return "/user/loginForm";
     }
 
 }

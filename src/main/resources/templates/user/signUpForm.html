@@ -28,7 +28,7 @@
 <body class="text-center">
 <main class="form-signin">
     <form method="POST" class="form-signin" th:object="${joinForm}" th:action="@{/user/signup}">
-        <h2 class="form-signin-heading">Create your account</h2>
+        <h2 class="form-signin-heading">Create your account</h2><br>
         <div class="form-group">
             <input type="email" th:field="*{email}" class="form-control" placeholder="User Email"
                    autofocus="true">
@@ -55,8 +55,8 @@
 
         <div class="form-group">
             <select th:field="*{type}" class="form-control">
-                <option value="CUSTOMER">Customer</option>
-                <option value="SHOP-OWNER">Shop-Owner</option>
+                <option th:value="CUSTOMER">CUSTOMER</option>
+                <option th:value="SHOP_OWNER">SHOP_OWNER</option>
             </select>
         </div>
 

@@ -14,6 +14,7 @@ public class UserInfo {
     private String nickname;
     private Long balance;
     private String address;
+    private String type;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -23,6 +24,7 @@ public class UserInfo {
         this.nickname = user.getNickname();
         this.balance = user.getBalance();
         this.address = user.getAddress();
+        this.type = user.getType().name();
         this.createdAt = user.getCreatedAt();
         this.updatedAt = user.getUpdatedAt();
     }
