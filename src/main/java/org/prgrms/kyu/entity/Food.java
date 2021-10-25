@@ -25,7 +25,7 @@ public class Food extends BaseTimeEntity{
   private String description;
 
   @Column(nullable = false)
-  private String price;
+  private Integer price;
 
   private String image;
 
