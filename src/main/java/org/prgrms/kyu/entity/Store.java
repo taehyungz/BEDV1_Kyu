@@ -11,7 +11,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import lombok.Getter;
 
+@Getter
 @Entity
 @Table(name = "Stores")
 public class Store extends BaseTimeEntity {
