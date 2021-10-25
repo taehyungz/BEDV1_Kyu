@@ -14,17 +14,17 @@ public class Order extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "address", nullable = false)
+    @Column(nullable = false)
     private String address;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(name = "order_status", nullable = false)
+    @Column(nullable = false)
     private OrderStatus orderStatus;
 
-    @Column(name = "phone_number", nullable = false)
+    @Column(nullable = false)
     private String phoneNumber;
 
-    @Column(name = "total_amount", nullable = false)
+    @Column(nullable = false)
     private Integer totalAmount;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
