@@ -32,12 +32,6 @@ public class Store extends BaseTimeEntity {
   @Column(nullable = false, length = 40)
   private String location;
 
-  @Column(nullable = false)
-  private Integer posX;
-
-  @Column(nullable = false)
-  private Integer posY;
-
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "user_id")
   private User user;
