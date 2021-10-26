@@ -11,10 +11,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
+@Builder
+@NoArgsConstructor
 @Table(name = "Stores")
 public class Store extends BaseTimeEntity {
 

@@ -4,11 +4,14 @@ import java.util.List;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.prgrms.kyu.ApiResponse;
+import org.prgrms.kyu.dto.StoreCreateRequest;
 import org.prgrms.kyu.dto.StoreFindResponse;
 import org.prgrms.kyu.service.StoreService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -26,6 +29,13 @@ public class StoreController {
       throws NotFoundException {
     return ApiResponse.ok(storeService.findById(id));
   }
+
+  @PostMapping("/api/v1/store")
+  public ApiResponse<Long> saveStore(@RequestParam StoreCreateRequest storeCreateRequest)
+      throws NotFoundException {
+    return ApiResponse.ok(storeService.save(storeCreateRequest));
+  }
+
 
 
 }
