@@ -3,6 +3,7 @@ package org.prgrms.kyu.service;
 import java.util.List;
 import java.util.stream.Collectors;
 import javassist.NotFoundException;
+import javax.naming.AuthenticationException;
 import lombok.RequiredArgsConstructor;
 import org.prgrms.kyu.dto.StoreCreateRequest;
 import org.prgrms.kyu.dto.StoreFindResponse;
@@ -48,7 +49,7 @@ public class StoreService {
   }
 
   @Transactional
-  public Long save(StoreCreateRequest storeCreateRequest) throws NotFoundException {
+  public Long save(StoreCreateRequest storeCreateRequest) throws AuthenticationException {
     return repository.save(
             Store.builder()
                 .name(storeCreateRequest.getName())

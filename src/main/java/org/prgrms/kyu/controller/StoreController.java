@@ -33,6 +33,7 @@ public class StoreController {
   @PostMapping("/api/v1/store")
   public ApiResponse<Long> saveStore(@RequestParam StoreCreateRequest storeCreateRequest)
       throws NotFoundException {
+      throws AuthenticationException {
     return ApiResponse.ok(storeService.save(storeCreateRequest));
   }
 
