@@ -37,11 +37,10 @@ public class KyuConfiguration extends WebSecurityConfigurerAdapter {
                     .anyRequest().permitAll().and()
                 .formLogin()
                     .loginPage("/user/login")
-//                        .defaultSuccessUrl("/")
                         .permitAll().and()
                     .logout()
                         .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
-                        .logoutSuccessUrl("/")
+                        .logoutSuccessUrl("/user/login")
                         .invalidateHttpSession(true)
                         .permitAll();
     }
