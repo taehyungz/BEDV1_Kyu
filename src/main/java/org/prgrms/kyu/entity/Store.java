@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "Stores")
 public class Store extends BaseTimeEntity {
 
@@ -42,5 +44,4 @@ public class Store extends BaseTimeEntity {
   @JoinColumn(name = "user_id")
   private User user;
 
-  private boolean isDeleted;
 }
