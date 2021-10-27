@@ -14,4 +14,13 @@ public class StoreFindResponse {
   String telephone;
   String description;
   String location;
+
+  public StoreFindResponse(Store store) {
+       this.id = store.getId();
+       this.name = store.getName();
+       this.telephone = store.getTelephone();
+       this.description = store.getDescription();
+       this.location = store.getLocation();
+  }
+
 }

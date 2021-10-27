@@ -45,12 +45,4 @@ public class Store extends BaseTimeEntity {
   @JoinColumn(name = "user_id")
   private User user;
 
-  public StoreFindResponse convertToStoreFindResponse(){
-    return new StoreFindResponse(
-        this.id,
-        this.name,
-        this.telephone,
-        this.description,
-        this.location);
-  }
 }

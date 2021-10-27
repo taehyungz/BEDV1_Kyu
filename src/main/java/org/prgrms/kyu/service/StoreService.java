@@ -25,14 +25,14 @@ public class StoreService {
     return repository
         .findAll()
         .stream()
-        .map(Store::convertToStoreFindResponse)
+        .map(StoreFindResponse::new)
         .collect(Collectors.toList());
   }
 
   public StoreFindResponse findById(Long id) throws NotFoundException {
     return repository
         .findById(id)
-        .map(Store::convertToStoreFindResponse)
+        .map(StoreFindResponse::new)
         .orElseThrow(() ->
             new NotFoundException("음식점 정보를 찾을 수 없습니다."));
   }
