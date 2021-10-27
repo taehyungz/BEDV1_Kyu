@@ -36,7 +36,7 @@ public class Food extends BaseTimeEntity {
 
     private String image;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "store_id")
     private Store store;
 
