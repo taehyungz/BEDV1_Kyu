@@ -1,0 +1,61 @@
+package org.prgrms.kyu.service;
+
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.prgrms.kyu.dto.JoinRequest;
+import org.prgrms.kyu.dto.LoginRequest;
+import org.prgrms.kyu.dto.UserInfo;
+import org.prgrms.kyu.entity.User;
+import org.prgrms.kyu.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+
+import javax.naming.AuthenticationException;
+import java.util.Optional;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.samePropertyValuesAs;
+
+@SpringBootTest
+@ActiveProfiles("test")
+class UserServiceTest {
+
+    @Autowired private UserRepository userRepository;
+    @Autowired private UserService userService;
+
+    @AfterEach
+    void clear() {
+        userRepository.deleteAll();
+    }
+
+    @Test
+    void 회원가입() {
+        //given
+        JoinRequest joinRequest = new JoinRequest("test@test.com", "1234", "user1", "nick1", "Seoul");
+
+        //when
+        final Long userId = userService.join(joinRequest);
+
+        //then
+        final Optional<User> foundUser = userRepository.findById(userId);
+        Assertions.assertThat(foundUser).isNotEmpty();
+        assertThat(new UserInfo(foundUser.get()), is(samePropertyValuesAs(new UserInfo(new User(joinRequest)))));
+    }
+
+    @Test
+    void 로그인() throws AuthenticationException {
+        //given
+        JoinRequest joinRequest = new JoinRequest("test@test.com", "1234", "user1", "nick1", "Seoul");
+        userRepository.save(new User(joinRequest));
+        LoginRequest loginRequest = new LoginRequest("test@test.com", "1234");
+
+        //when
+        final UserInfo userInfo = userService.login(loginRequest);
+
+        //then
+        assertThat(userInfo, is(samePropertyValuesAs(new UserInfo(new User(joinRequest)))));
+    }
+}
