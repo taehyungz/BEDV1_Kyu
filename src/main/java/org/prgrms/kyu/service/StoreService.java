@@ -46,6 +46,11 @@ public class StoreService {
         .getId();
   }
 
+  @Transactional
+  public void deleteAll(){
+    repository.deleteAll();
+  }
+
 
 
 }
