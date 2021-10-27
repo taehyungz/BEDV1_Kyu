@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class StoreService {
+
   private final StoreRepository repository;
   private final UserService userService;
 
@@ -24,26 +25,14 @@ public class StoreService {
     return repository
         .findAll()
         .stream()
-        .map((item) ->
-            new StoreFindResponse(
-                item.getId(),
-                item.getName(),
-                item.getTelephone(),
-                item.getDescription(),
-                item.getLocation()))
+        .map(Store::convertToStoreFindResponse)
         .collect(Collectors.toList());
   }
 
   public StoreFindResponse findById(Long id) throws NotFoundException {
     return repository
         .findById(id)
-        .map((item) ->
-            new StoreFindResponse(
-                item.getId(),
-                item.getName(),
-                item.getTelephone(),
-                item.getDescription(),
-                item.getLocation()))
+        .map(Store::convertToStoreFindResponse)
         .orElseThrow(() ->
             new NotFoundException("음식점 정보를 찾을 수 없습니다."));
   }
@@ -51,13 +40,9 @@ public class StoreService {
   @Transactional
   public Long save(StoreCreateRequest storeCreateRequest) throws AuthenticationException {
     return repository.save(
-            Store.builder()
-                .name(storeCreateRequest.getName())
-                .telephone(storeCreateRequest.getTelephone())
-                .description(storeCreateRequest.getDescription())
-                .location(storeCreateRequest.getLocation())
-                .user(userService.findById(storeCreateRequest.getUserId()))
-                .build())
+            storeCreateRequest.convertToStore(
+                userService.findById(
+                    storeCreateRequest.getUserId())))
         .getId();
   }
 
