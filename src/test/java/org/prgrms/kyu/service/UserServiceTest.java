@@ -10,6 +10,7 @@ import org.prgrms.kyu.entity.User;
 import org.prgrms.kyu.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
 import javax.naming.AuthenticationException;
@@ -25,6 +26,7 @@ class UserServiceTest {
 
     @Autowired private UserRepository userRepository;
     @Autowired private UserService userService;
+    @Autowired private BCryptPasswordEncoder encoder;
 
     @AfterEach
     void clear() {
@@ -34,7 +36,7 @@ class UserServiceTest {
     @Test
     void 회원가입() {
         //given
-        JoinRequest joinRequest = new JoinRequest("test@test.com", "1234", "user1", "nick1", "Seoul");
+        JoinRequest joinRequest = new JoinRequest("test@test.com", "1234", "user1", "nick1", "Seoul", "CUSTOMER");
 
         //when
         final Long userId = userService.join(joinRequest);
@@ -42,13 +44,14 @@ class UserServiceTest {
         //then
         final Optional<User> foundUser = userRepository.findById(userId);
         Assertions.assertThat(foundUser).isNotEmpty();
-        assertThat(new UserInfo(foundUser.get()), is(samePropertyValuesAs(new UserInfo(new User(joinRequest)))));
+        assertThat(new UserInfo(foundUser.get()), is(samePropertyValuesAs(new UserInfo(userRepository.findById(userId).get()))));
     }
 
     @Test
     void 로그인() throws AuthenticationException {
         //given
-        JoinRequest joinRequest = new JoinRequest("test@test.com", "1234", "user1", "nick1", "Seoul");
+        JoinRequest joinRequest = new JoinRequest("test@test.com", "1234", "user1", "nick1", "Seoul", "CUSTOMER");
+        joinRequest.encodePassword(encoder.encode(joinRequest.getPassword()));
         userRepository.save(new User(joinRequest));
         LoginRequest loginRequest = new LoginRequest("test@test.com", "1234");
 
@@ -56,6 +59,6 @@ class UserServiceTest {
         final UserInfo userInfo = userService.login(loginRequest);
 
         //then
-        assertThat(userInfo, is(samePropertyValuesAs(new UserInfo(new User(joinRequest)))));
+        assertThat(userInfo, is(samePropertyValuesAs(new UserInfo(userRepository.getUserByEmail(joinRequest.getEmail())))));
     }
 }
