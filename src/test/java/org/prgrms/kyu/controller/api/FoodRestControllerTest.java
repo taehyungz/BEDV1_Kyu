@@ -3,6 +3,7 @@ package org.prgrms.kyu.controller.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
 import org.prgrms.kyu.dto.FoodRequest;
 import org.prgrms.kyu.service.FoodService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -43,8 +46,11 @@ class FoodRestControllerTest {
                 .price(1000)
                 .build();
 
+        given(foodService.save(ArgumentMatchers.any(FoodRequest.class),eq(1L)))
+                .willReturn(1L);
+
         //When //Then
-        mockMvc.perform(post("/api/v1/stores/{storeId}/foods", 6L)
+        mockMvc.perform(post("/api/v1/stores/{storeId}/foods", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
