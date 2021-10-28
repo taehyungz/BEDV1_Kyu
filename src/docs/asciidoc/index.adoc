@@ -1,0 +1,19 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+== 뀨의 민족
+
+=== 가게 단일 메뉴 등록
+
+=== /api/v1/stores/{storeId}/foods
+
+.Request
+include::{snippets}/food-save/http-request.adoc[]
+include::{snippets}/food-save/request-fields.adoc[]
+
+.Response
+include::{snippets}/food-save/http-response.adoc[]
+include::{snippets}/food-save/response-fields.adoc[]
+
