@@ -18,7 +18,7 @@ public class FoodService {
     @Transactional
     public Long save(FoodRequest request, Long storeId) {
         var food = foodRepository.save(FoodRequest.convertToFood(request));
-        food.update(storeRepository.findById(storeId).get());
+        food.update(storeRepository.getById(storeId));
         return food.getId();
     }
 
