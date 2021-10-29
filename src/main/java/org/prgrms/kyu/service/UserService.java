@@ -1,5 +1,6 @@
 package org.prgrms.kyu.service;
 
+
 import lombok.RequiredArgsConstructor;
 import org.prgrms.kyu.dto.JoinRequest;
 import org.prgrms.kyu.dto.LoginRequest;
@@ -49,4 +50,9 @@ public class UserService {
     public UserInfo getUser(String email) {
         return new UserInfo(repository.getUserByEmail(email));
     }
+
+    public User findById(Long id) throws AuthenticationException {
+    return repository.findById(id)
+        .orElseThrow(() -> new AuthenticationException("사용자 정보를 찾을 수 없습니다."));
+  }
 }
