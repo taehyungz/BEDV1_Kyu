@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
 import org.prgrms.kyu.dto.FoodRequest;
 import org.prgrms.kyu.entity.Food;
 import org.prgrms.kyu.entity.Store;
@@ -70,5 +69,35 @@ class FoodServiceTest {
         Food findFood = foodRepository.findById(newFoodId).get();
 
         assertEquals(food.getId(), findFood.getId());
+    }
+
+    @Test
+    void getAll() {
+        //Given
+        Long fakeStoreId = 1L;
+
+        Store store = Store.builder()
+                .id(fakeStoreId)
+                .description("test Description")
+                .location("test location")
+                .telephone("010")
+                .build();
+
+
+        FoodRequest request = FoodRequest.builder()
+                .name("test name")
+                .description("test description")
+                .price(1000)
+                .build();
+
+        Food food = FoodRequest.convertToFood(request);
+        food.update(store);
+
+        Long fakeFoodId = 1L;
+        ReflectionTestUtils.setField(food, "id", fakeFoodId);
+
+        //When
+
+        //Then
     }
 }
