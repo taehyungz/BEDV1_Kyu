@@ -1,15 +1,13 @@
 package org.prgrms.kyu.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.prgrms.kyu.entity.Food;
 
 @Getter
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
+@Setter
 public class FoodRequest {
     private String name;
     private String description;
