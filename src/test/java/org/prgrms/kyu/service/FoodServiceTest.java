@@ -1,41 +1,74 @@
 package org.prgrms.kyu.service;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+
 import org.prgrms.kyu.dto.FoodRequest;
+import org.prgrms.kyu.entity.Food;
+import org.prgrms.kyu.entity.Store;
 import org.prgrms.kyu.repository.FoodRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.prgrms.kyu.repository.StoreRepository;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import java.util.Optional;
 
-@SpringBootTest
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+
+@ExtendWith(SpringExtension.class)
 class FoodServiceTest {
-    @Autowired
+    @InjectMocks
     private FoodService foodService;
 
-    @Autowired
+    @Mock
     private FoodRepository foodRepository;
 
-    @AfterEach
-    void clear() {
-        foodRepository.deleteAll();
-    }
+    @Mock
+    private StoreRepository storeRepository;
 
     @Test
     void save() {
         //Given
+        Long fakeStoreId = 1L;
+
+        Store store = Store.builder()
+                .id(fakeStoreId)
+                .description("test Description")
+                .location("test location")
+                .telephone("010")
+                .build();
+
+
         FoodRequest request = FoodRequest.builder()
                 .name("test name")
                 .description("test description")
                 .price(1000)
                 .build();
 
+        Food food = FoodRequest.convertToFood(request);
+        food.update(store);
+
+        Long fakeFoodId = 1L;
+        ReflectionTestUtils.setField(food, "id", fakeFoodId);
+
+
+        given(foodRepository.save(any()))
+                .willReturn(food);
+        given(storeRepository.findById(fakeStoreId))
+                .willReturn(Optional.ofNullable(store));
+        given(foodRepository.findById(fakeFoodId))
+                .willReturn(Optional.ofNullable(food));
+
         //When
-        foodService.save(request, 2L);
+        Long newFoodId = foodService.save(request, fakeStoreId);
 
         //Then
-        assertThat(foodRepository.findAll().isEmpty(), is(false));
+        Food findFood = foodRepository.findById(newFoodId).get();
+
+        assertEquals(food.getId(), findFood.getId());
     }
 }
