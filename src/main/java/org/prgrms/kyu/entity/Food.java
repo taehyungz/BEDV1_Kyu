@@ -42,9 +42,10 @@ public class Food extends BaseTimeEntity {
 
 
     @Builder
-    public Food(String name, String description, Integer price) {
+    public Food(String name, String description, String image, Integer price) {
         this.name = name;
         this.description = description;
+        this.image = image;
         this.price = price;
     }
 
