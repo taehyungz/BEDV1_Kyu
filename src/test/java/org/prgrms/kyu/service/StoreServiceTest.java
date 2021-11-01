@@ -1,11 +1,8 @@
 package org.prgrms.kyu.service;
 
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javassist.NotFoundException;
 import javax.naming.AuthenticationException;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,7 +27,6 @@ import static org.hamcrest.Matchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class StoreServiceTest {
@@ -158,7 +154,7 @@ class StoreServiceTest {
 
     assertThat(all,allOf(
         notNullValue(),
-        samePropertyValuesAs(findAll)));
+        hasSize(2)));
   }
 
 }
