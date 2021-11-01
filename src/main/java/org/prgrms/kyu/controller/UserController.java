@@ -27,8 +27,8 @@ public class UserController {
         if (securityService.isAuthenticated()) {
           model.addAttribute("userInfo",
                              userService.getUser(((UserDetails) authentication.getPrincipal()).getUsername()));
-          model.addAttribute("stores",storeService.findAll());
         }
+        model.addAttribute("stores",storeService.findAll());
         return "/index";
     }
 
