@@ -37,6 +37,14 @@ public class StoreService {
             new NotFoundException("음식점 정보를 찾을 수 없습니다."));
   }
 
+  public List<StoreFindResponse> findByUserId(Long userId) {
+    return repository
+        .findStoresByUserId(userId)
+        .stream()
+        .map(StoreFindResponse::new)
+        .collect(Collectors.toList());
+  }
+
   @Transactional
   public Long save(StoreCreateRequest storeCreateRequest) throws AuthenticationException {
     return repository.save(

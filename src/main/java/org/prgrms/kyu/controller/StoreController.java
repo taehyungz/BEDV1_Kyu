@@ -1,7 +1,6 @@
 package org.prgrms.kyu.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.prgrms.kyu.dto.FoodRequest;
 import org.prgrms.kyu.dto.StoreCreateRequest;
 import org.prgrms.kyu.dto.UserInfo;
 import org.prgrms.kyu.entity.UserType;
@@ -36,6 +35,24 @@ public class StoreController {
           userService.getUser(((UserDetails) authentication.getPrincipal()).getUsername()));
 
       return "/store/my-store";
+    }else if(userType.equals(UserType.CUSTOMER)){
+      return "/index";
+    }
+    return "/user/loginForm";
+  }
+
+  @GetMapping("/user/stores")
+  public String getMyStores(Model model, Authentication authentication) {
+    if (!securityService.isAuthenticated()) return "redirect:/";
+    UserType userType = userService.getUserType(
+        ((UserDetails) authentication.getPrincipal()).getUsername());
+    if(userType.equals(UserType.STORE_OWNER)){
+      UserInfo user = userService.getUser(
+          ((UserDetails) authentication.getPrincipal()).getUsername());
+      model.addAttribute("userInfo",
+          user);
+      model.addAttribute("stores", storeService.findByUserId(user.getId()));
+      return "/store/myStoreListView";
     }else if(userType.equals(UserType.CUSTOMER)){
       return "/index";
     }
