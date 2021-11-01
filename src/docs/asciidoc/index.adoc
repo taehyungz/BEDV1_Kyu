@@ -3,7 +3,12 @@ ifndef::snippets[]
 :snippets: ./build/generated-snippets
 endif::[]
 
-== 음식점 조회
+
+
+== 뀨의 민족
+
+
+=== 음식점 조회
 
 === /stores/
 
@@ -15,7 +20,7 @@ include::{snippets}/store-find-all/response-fields.adoc[]
 include::{snippets}/store-find-all/http-response.adoc[]
 include::{snippets}/store-find-all/response-fields.adoc[]
 
-== 음식점 id 조회
+=== 음식점 id 조회
 
 === /stores/{id}
 
@@ -27,7 +32,7 @@ include::{snippets}/store-find-by-id/response-fields.adoc[]
 include::{snippets}/store-find-by-id/http-response.adoc[]
 include::{snippets}/store-find-by-id/response-fields.adoc[]
 
-== 음식점 생성
+=== 음식점 생성
 
 === /stores/
 
@@ -38,3 +43,17 @@ include::{snippets}/store-save/request-fields.adoc[]
 .Response
 include::{snippets}/store-save/http-response.adoc[]
 include::{snippets}/store-save/response-fields.adoc[]
+
+
+=== 가게 단일 메뉴 등록
+
+=== /api/v1/stores/{storeId}/foods
+
+.Request
+include::{snippets}/food-save/http-request.adoc[]
+include::{snippets}/food-save/request-fields.adoc[]
+
+.Response
+include::{snippets}/food-save/http-response.adoc[]
+include::{snippets}/food-save/response-fields.adoc[]
+

@@ -27,11 +27,10 @@ public class UserController {
 
     @GetMapping("/")
     public String home(Model model, Authentication authentication) {
-        if (securityService.isAuthenticated()){
-            model.addAttribute("userInfo",
-                userService.getUser(((UserDetails) authentication.getPrincipal()).getUsername()));
-            model.addAttribute("stores",
-                storeService.findAll());
+        if (securityService.isAuthenticated()) {
+          model.addAttribute("userInfo",
+                             userService.getUser(((UserDetails) authentication.getPrincipal()).getUsername()));
+          model.addAttribute("stores",storeService.findAll());
         }
         return "/index";
     }

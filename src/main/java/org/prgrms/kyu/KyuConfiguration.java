@@ -20,6 +20,11 @@ public class KyuConfiguration extends WebSecurityConfigurerAdapter {
     UserDetailsService userDetailsService;
 
     @Bean
+    public UserDetailsService userDetailsService() {
+        return super.userDetailsService();
+    }
+
+    @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
