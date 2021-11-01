@@ -29,8 +29,8 @@ public class UserController {
         if (securityService.isAuthenticated()) {
           model.addAttribute("userInfo",
                              userService.getUser(((UserDetails) authentication.getPrincipal()).getUsername()));
-          model.addAttribute("stores",storeService.findAll());
         }
+        model.addAttribute("stores",storeService.findAll());
         return "/index";
     }
 
@@ -55,15 +55,4 @@ public class UserController {
         return "/user/loginForm";
     }
 
-    @GetMapping("/user/myStore")
-    public String myStore(Model model, Authentication authentication) throws AuthenticationException {
-        if (!securityService.isAuthenticated()) return "/user/loginForm";
-
-        final String userType = authentication.getAuthorities().stream().findFirst().orElseThrow(AuthenticationException::new).getAuthority();
-        if (userType.equals(UserType.STORE_OWNER.name())) {
-            model.addAttribute("userInfo", userService.getUser(authentication.getName()));
-            return "/store/myStore";
-        }
-        return "redirect:/";
-    }
 }
