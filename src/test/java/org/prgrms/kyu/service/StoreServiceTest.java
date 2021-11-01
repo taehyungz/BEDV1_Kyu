@@ -1,11 +1,6 @@
 package org.prgrms.kyu.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.List;
-import java.util.Optional;
 import javassist.NotFoundException;
-import javax.naming.AuthenticationException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,11 +9,14 @@ import org.prgrms.kyu.dto.JoinRequest;
 import org.prgrms.kyu.dto.StoreCreateRequest;
 import org.prgrms.kyu.dto.StoreFindResponse;
 import org.prgrms.kyu.entity.Store;
-import org.prgrms.kyu.entity.UserType;
 import org.prgrms.kyu.repository.StoreRepository;
 import org.prgrms.kyu.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import javax.naming.AuthenticationException;
+import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -50,9 +48,8 @@ class StoreServiceTest {
         "맘스터치",
         "01011112222",
         "맘스터치입니다.",
-        "Seoul",
-        userId);
-    storeId = storeService.save(storeCreateRequest);
+        "Seoul");
+    storeId = storeService.save(storeCreateRequest, this.userId);
   }
 
   @AfterEach
@@ -74,8 +71,7 @@ class StoreServiceTest {
         store.getName(),
         store.getTelephone(),
         store.getDescription(),
-        store.getLocation(),
-        store.getUser().getId());
+        store.getLocation());
     assertThat(findStoreRequest,allOf(notNullValue(),samePropertyValuesAs(storeCreateRequest)));
   }
 
@@ -103,9 +99,8 @@ class StoreServiceTest {
         "맘스터치2",
         "01011112222",
         "맘스터치2입니다.",
-        "Seoul",
-        userId2);
-    storeService.save(storeCreateRequest2);
+        "Seoul");
+    storeService.save(storeCreateRequest2, this.userId);
 
     //when
     List<StoreFindResponse> all = storeService.findAll();

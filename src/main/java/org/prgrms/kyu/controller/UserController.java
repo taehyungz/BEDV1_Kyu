@@ -1,10 +1,7 @@
 package org.prgrms.kyu.controller;
 
-import javax.naming.AuthenticationException;
 import lombok.RequiredArgsConstructor;
 import org.prgrms.kyu.dto.JoinRequest;
-import org.prgrms.kyu.dto.UserInfo;
-import org.prgrms.kyu.entity.User;
 import org.prgrms.kyu.entity.UserType;
 import org.prgrms.kyu.service.SecurityService;
 import org.prgrms.kyu.service.StoreService;
@@ -16,6 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import javax.naming.AuthenticationException;
 
 @Controller
 @RequiredArgsConstructor
@@ -57,19 +56,14 @@ public class UserController {
     }
 
     @GetMapping("/user/myStore")
-    public String myStore(Model model, Authentication authentication) {
-        if (!securityService.isAuthenticated()) return "redirect:/";
-        UserType userType = userService.getUserType(
-            ((UserDetails) authentication.getPrincipal()).getUsername());
-        if(userType.equals(UserType.STORE_OWNER)){
-            model.addAttribute("userInfo",
-                userService.getUser(((UserDetails) authentication.getPrincipal()).getUsername()));
+    public String myStore(Model model, Authentication authentication) throws AuthenticationException {
+        if (!securityService.isAuthenticated()) return "/user/loginForm";
 
+        final String userType = authentication.getAuthorities().stream().findFirst().orElseThrow(AuthenticationException::new).getAuthority();
+        if (userType.equals(UserType.STORE_OWNER.name())) {
+            model.addAttribute("userInfo", userService.getUser(authentication.getName()));
             return "/store/myStore";
-        }else if(userType.equals(UserType.CUSTOMER)){
-            return "/index";
         }
-        return "/user/loginForm";
+        return "redirect:/";
     }
-
 }
