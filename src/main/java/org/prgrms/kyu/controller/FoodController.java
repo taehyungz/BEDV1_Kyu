@@ -1,6 +1,7 @@
 package org.prgrms.kyu.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.prgrms.kyu.commons.S3Uploader;
 import org.prgrms.kyu.dto.FoodRequest;
 import org.prgrms.kyu.service.FoodService;
 import org.prgrms.kyu.service.SecurityService;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
 
 @Controller
 @RequiredArgsConstructor
@@ -21,6 +25,7 @@ public class FoodController {
     private final FoodService foodService;
     private final SecurityService securityService;
     private final UserService userService;
+    private final S3Uploader s3Uploader;
 
     @GetMapping("new-food")
     public String newFoodPage(Model model) {
@@ -43,4 +48,11 @@ public class FoodController {
         model.addAttribute("storeId", storeId);
         return "/food/food-list";
     }
+
+    @PostMapping("/upload")
+    @ResponseBody
+    public String upload(@RequestParam("data") MultipartFile multipartFile) throws IOException {
+        return s3Uploader.upload(multipartFile, "static");
+    }
+
 }
