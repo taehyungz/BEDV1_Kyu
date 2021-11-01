@@ -5,6 +5,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import javassist.NotFoundException;
 import javax.naming.AuthenticationException;
+
+import javassist.NotFoundException;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,10 +20,16 @@ import org.prgrms.kyu.dto.JoinRequest;
 import org.prgrms.kyu.dto.StoreCreateRequest;
 import org.prgrms.kyu.dto.StoreFindResponse;
 import org.prgrms.kyu.entity.Store;
+
 import org.prgrms.kyu.entity.User;
+
 import org.prgrms.kyu.repository.StoreRepository;
 import org.prgrms.kyu.repository.UserRepository;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import javax.naming.AuthenticationException;
+import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -69,8 +78,9 @@ class StoreServiceTest {
         "맘스터치",
         "01011112222",
         "맘스터치입니다.",
-        "Seoul",
-        fakeUserId);
+        "Seoul");
+    storeId = storeService.save(storeCreateRequest, this.userId);
+  }
 
     saveStore = storeCreateRequest.convertToStore(saveUser);
 
@@ -97,6 +107,7 @@ class StoreServiceTest {
     Optional<Store> findStore = storeRepository.findById(fakeStoreId);
 
     assertThat(findStore.get(),allOf(notNullValue(),samePropertyValuesAs(saveStore)));
+
   }
 
 
@@ -121,40 +132,6 @@ class StoreServiceTest {
 
 
 
-  @Test
-  @DisplayName("모든 음식점을 찾을 수 있다.")
-  public void findAllTest() throws AuthenticationException {
-    //given
-
-    Long fakeStoreId = 2L;
-    StoreCreateRequest storeCreateRequest = new StoreCreateRequest(
-        "맘스터치",
-        "01011112222",
-        "맘스터치입니다.",
-        "Seoul",
-        fakeUserId);
-
-    Store saveStore2 = storeCreateRequest.convertToStore(saveUser);
-    given(storeRepository.save(any())).willReturn(saveStore2);
-    storeService.save(storeCreateRequest);
-
-
-    StoreFindResponse storeFindResponse = new StoreFindResponse(saveStore);
-    StoreFindResponse storeFindResponse2 = new StoreFindResponse(saveStore2);
-    doReturn(List.of(storeFindResponse, storeFindResponse2)).when(storeService).findAll();
-    given(storeRepository.findAll()).willReturn(List.of(saveStore, saveStore2));
-
-    //when
-    List<StoreFindResponse> all = storeService.findAll();
-
-    //then
-    List<StoreFindResponse> findAll = storeRepository.findAll().stream()
-        .map((StoreFindResponse::new))
-        .collect(Collectors.toList());
-
-    assertThat(all,allOf(
-        notNullValue(),
-        hasSize(2)));
-  }
+ 
 
 }

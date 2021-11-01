@@ -4,11 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.prgrms.kyu.dto.StoreCreateRequest;
 import org.prgrms.kyu.dto.UserInfo;
 import org.prgrms.kyu.entity.UserType;
+
 import org.prgrms.kyu.service.SecurityService;
 import org.prgrms.kyu.service.StoreService;
 import org.prgrms.kyu.service.UserService;
 import org.springframework.security.core.Authentication;
+
 import org.springframework.security.core.userdetails.UserDetails;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,11 +62,14 @@ public class StoreController {
     return "/user/loginForm";
   }
 
+
   @PostMapping("/stores")
-  public String signUp(@ModelAttribute("storeForm") StoreCreateRequest storeCreateRequest)
+  public String signUp(@ModelAttribute("storeForm") StoreCreateRequest storeCreateRequest,
+                       Authentication authentication)
       throws AuthenticationException {
-    System.out.println(storeCreateRequest.getUserId());
-    storeService.save(storeCreateRequest);
+    if (!securityService.isAuthenticated()) throw new AuthenticationException();
+    final UserInfo userInfo = userService.getUser(authentication.getName());
+    storeService.save(storeCreateRequest, userInfo.getId());
     return "redirect:/";
   }
 }
