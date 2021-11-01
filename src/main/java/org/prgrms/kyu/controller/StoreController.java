@@ -42,7 +42,7 @@ public class StoreController {
     return "/user/loginForm";
   }
 
-  @PostMapping("/store")
+  @PostMapping("/stores")
   public String signUp(@ModelAttribute("storeForm") StoreCreateRequest storeCreateRequest)
       throws AuthenticationException {
     System.out.println(storeCreateRequest.getUserId());

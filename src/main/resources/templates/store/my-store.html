@@ -11,7 +11,7 @@
 </head>
 <body class="text-center">
 <main class="form-signin">
-    <form method="POST" class="form-signin" th:object="${storeForm}" th:action="@{/store}">
+    <form method="POST" class="form-signin" th:object="${storeForm}" th:action="@{/stores}">
         <h2 class="form-store-heading">Create Store</h2><br>
         <div class="form-group">
             <input type="text" th:field="*{name}" class="form-control" placeholder="Store Name" autofocus="true">
